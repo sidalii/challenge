@@ -1,12 +1,17 @@
+
 import { useState, useEffect } from 'react';
-import { CardsEqualsToTheDesiredAmount } from "../components";
+import { AvailableAmountProposition, CardsEqualsToTheDesiredAmount } from "../components";
 import { endpoints } from '../api';
 import '../App.css';
 
 
-function LevelTwo() {
+function LevelOne() {
     const [amount, setAmount] = useState('');
     const [data, setData] = useState('');
+    const [desiredAmount, setDesiredAmount] = useState('');
+    const [test, setTest] = useState("");
+
+
 
     const shopId = 5;
 
@@ -28,8 +33,8 @@ function LevelTwo() {
 
 
 
-    const fetchData = (shopId, amount) => {
-        fetch(
+    const fetchData = async (shopId, amount) => {
+        await fetch(
             endpoints.combination.search(shopId, amount), {
             headers: {
                 'Authorization': 'tokenTest123',
@@ -38,6 +43,7 @@ function LevelTwo() {
         }).then(async (res) => {
             const data = await res.json()
             setData(data)
+            setTest("hello")
         }
         );
     }
@@ -45,13 +51,16 @@ function LevelTwo() {
     const updateData = (value) => {
         setAmount(value);
         fetchData(shopId, value)
+        setDesiredAmount(undefined)
 
     }
 
 
     const handelClick = () => {
-        if (amount)
+        if (amount) {
             fetchData(shopId, amount)
+
+        }
         else {
             alert("please type your amount!")
         }
@@ -66,42 +75,10 @@ function LevelTwo() {
         }
     }
 
-
-    const handlePreviousAmountCick = () => {
-        const { floor: { value } } = data;
-
-        onClickDesiredAmount(value)
-
-    }
-
-    const handleNextAmountCick = () => {
-        const { ceil: { value } } = data;
-        onClickDesiredAmount(value)
-
-    }
-
-
-    const renderPossibleAmount = () => {
-        if (data && !data.equal) {
-            const { ceil, floor } = data;
-            return (
-                <fieldset>
-                    <h2> the desired amount is not available ,please click one of the buttons to have proposition:</h2>
-                    {ceil && <button className="next-amount-btn" onClick={handleNextAmountCick}>Next amount</button>}
-                    {floor && <button className="previous-amount-btn" onClick={handlePreviousAmountCick}>Previous amount</button>
-                    }
-                </fieldset>
-            )
-        }
-
-    }
-
     return (
-
-
         <div className="container">
             <div className="main-block">
-                <h1>  Level 2  </h1>
+                <h1>  Level 1  </h1>
                 <h1>Desired amount:</h1>
                 <div className="form-container">
                     <div className="info">
@@ -111,9 +88,17 @@ function LevelTwo() {
                     </div>
 
                     {(!data || (data && data.equal)) && <button onClick={handelClick}>Submit</button>}
+
+
+                    {/* Level 1  */}
                     <div>
-                        <CardsEqualsToTheDesiredAmount data={data} />
-                        {renderPossibleAmount()}
+                        {<CardsEqualsToTheDesiredAmount data={data} />
+                        }
+                        <AvailableAmountProposition
+                            data={data}
+                            desiredAmount={desiredAmount}
+                            setDesiredAmount={setDesiredAmount}
+                            onClickDesiredAmount={onClickDesiredAmount} />
                     </div>
                 </div>
             </div>
@@ -122,4 +107,4 @@ function LevelTwo() {
     )
 }
 
-export default LevelTwo;
+export default LevelOne;

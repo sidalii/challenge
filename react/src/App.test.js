@@ -1,8 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+it('should render the levelOne and levelTwo componenets', () => {
+
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const levelOneTitleElement = screen.getByText(/Level 1/i);
+  const levelTwoTitleElement = screen.getByText(/Level 2/i);
+  expect(levelOneTitleElement).toBeInTheDocument()
+  expect(levelTwoTitleElement).toBeInTheDocument()
+
 });
+
+
