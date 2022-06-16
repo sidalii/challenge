@@ -9,7 +9,6 @@ function LevelOne() {
     const [amount, setAmount] = useState('');
     const [data, setData] = useState('');
     const [desiredAmount, setDesiredAmount] = useState('');
-    const [test, setTest] = useState("");
 
 
 
@@ -34,18 +33,21 @@ function LevelOne() {
 
 
     const fetchData = async (shopId, amount) => {
-        await fetch(
-            endpoints.combination.search(shopId, amount), {
-            headers: {
-                'Authorization': 'tokenTest123',
-                'Content-Type': 'application/x-www-form-urlencoded'
+        try {
+            await fetch(
+                endpoints.combination.search(shopId, amount), {
+                headers: {
+                    'Authorization': 'tokenTest123',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(async (res) => {
+                const data = await res.json()
+                setData(data)
             }
-        }).then(async (res) => {
-            const data = await res.json()
-            setData(data)
-            setTest("hello")
+            );
+        } catch (error) {
+            alert(error + ": please run first the mock server is provided in the `server` folder")
         }
-        );
     }
 
     const updateData = (value) => {

@@ -28,18 +28,22 @@ function LevelTwo() {
 
 
 
-    const fetchData = (shopId, amount) => {
-        fetch(
-            endpoints.combination.search(shopId, amount), {
-            headers: {
-                'Authorization': 'tokenTest123',
-                'Content-Type': 'application/x-www-form-urlencoded'
+    const fetchData = async (shopId, amount) => {
+        try {
+            await fetch(
+                endpoints.combination.search(shopId, amount), {
+                headers: {
+                    'Authorization': 'tokenTest123',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(async (res) => {
+                const data = await res.json()
+                setData(data)
             }
-        }).then(async (res) => {
-            const data = await res.json()
-            setData(data)
+            );
+        } catch (error) {
+            alert(error + ": please run first the mock server is provided in the `server` folder")
         }
-        );
     }
 
     const updateData = (value) => {
